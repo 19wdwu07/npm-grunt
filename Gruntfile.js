@@ -2,16 +2,20 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
-     pkg: grunt.file.readJSON('package.json'),
-    // uglify: {
-    //   options: {
-    //     banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-    //   },
-    //   build: {
-    //     src: 'src/<%= pkg.name %>.js',
-    //     dest: 'build/<%= pkg.name %>.min.js'
-    //   }
-    // }
+    pkg: grunt.file.readJSON('package.json'),
+    uglify: {
+
+      build: {
+        src: 'js/script.js',
+        dest: 'js/script.min.js'
+      }
+    },
+    watch: {
+      all: {
+        files: ['sass/style.scss', 'css/style.css', 'js/script.js'],
+        tasks: ['sass','csslint','jshint']
+      }
+    },
     sass: {                              // Task
     dist: {                            // Target
       options: {                       // Target options
@@ -23,19 +27,32 @@ module.exports = function(grunt) {
       }
       }
     },
+    csslint: {
+
+      lax: {
+        options: {
+          import: false,
+          'order-alphabetical' :false
+        },
+        src: ['css/*.css','!*.min.css']
+      }
+    },
     jshint: {
       all: ['Gruntfile.js', 'js/*.js']
     }
   });
 
   // Load the plugin that provides the "uglify" task.
-  // grunt.loadNpmTasks('grunt-contrib-uglify');
+     grunt.loadNpmTasks('grunt-contrib-uglify');
+     grunt.loadNpmTasks('grunt-contrib-watch');
      grunt.loadNpmTasks('grunt-contrib-sass');
+     grunt.loadNpmTasks('grunt-contrib-csslint');
      grunt.loadNpmTasks('grunt-contrib-jshint');
 
 
+
   // Default task(s).
-  // grunt.registerTask('default', ['uglify']);
-    grunt.registerTask('test', ['sass','jshint']); //run this using grunt test
+    grunt.registerTask('ugly', ['uglify']);
+    grunt.registerTask('default', ['watch']); //run this using grunt test
 
 };

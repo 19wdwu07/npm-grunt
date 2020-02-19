@@ -7,3 +7,5 @@ $(document).ready(function(){
     $(this).css('background','cyan');
   });
 });
+let x=10;
+let y=`${x}`
